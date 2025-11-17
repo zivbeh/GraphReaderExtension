@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Region Screenshot</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+        
+        header {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        h1 {
+            font-size: 14px;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        button {
+            appearance: none;
+            border: 0;
+            background: #2563eb;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        main {
+            padding: 12px;
+        }
+        
+        .canvasWrap {
+            position: relative;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fafafa;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        canvas {
+            display: block;
+            width: 85%;
+            height: auto;
+            image-rendering: crisp-edges;
+        }
+        
+        #overlayCanvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        .note {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+        
+        .cal-panel {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #ffffff;
+        }
+        
+        .cal-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .cal-row input[type="text"] {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            outline: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .cal-results {
+            font-size: 12px;
+            color: #374151;
+            margin-top: 6px;
+            white-space: pre-wrap;
+        }
+        
+        .cal-section {
+            margin-top: 10px;
+        }
+        
+        .cal-sec-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+        
+        .cal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .cal-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .cal-item .t {
+            font-size: 12px;
+            color: #6b7280;
+            min-width: 90px;
+        }
+        
+        .cal-item input[type="text"] {
+            width: 100px;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            outline: none;
+        }
+        
+        .cal-remove-btn {
+            padding: 4px 8px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .cal-hover {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #111827;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Region Screenshot</h1>
+        <button id="captureBtn" type="button">Capture</button>
+    </header>
+    <main>
+        <div class="canvasWrap">
+            <canvas id="resultCanvas"></canvas>
+            <canvas id="overlayCanvas"></canvas>
+        </div>
+        <div class="note">Select an area; the result will display here.</div>
+        <div id="calibrationPanel" class="cal-panel">
+            <div class="cal-row">
+                <button id="measureSlopeBtn" type="button">Measure slope</button>
+            </div>
+            <div id="hoverReadout" class="cal-hover">Hover x: —, y: —</div>
+            <div id="calMessage">Awaiting axes detection…</div>
+            <div id="calInputRow" class="cal-row hidden">
+                <label id="calLabel" for="calValueInput" style="width: 160px;">Value:</label>
+                <input id="calValueInput" type="text" placeholder="Enter value" inputmode="decimal" />
+                <button id="calSubmitBtn" type="button">OK</button>
+            </div>
+            <div class="cal-section">
+                <div class="cal-sec-title">X point (max 1)</div>
+                <div id="xPointsList" class="cal-list"></div>
+            </div>
+            <div class="cal-section">
+                <div class="cal-sec-title">Y point (max 1)</div>
+                <div id="yPointsList" class="cal-list"></div>
+            </div>
+            <div id="calResults" class="cal-results"></div>
+        </div>
+    </main>
+    <script src="popup.js"></script>
+</body>
+
+</html>

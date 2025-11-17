@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Region Screenshot",
+    "description": "Select a portion of the current page and save a screenshot of it.",
+    "version": "1.0.0",
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "tabs",
+        "storage"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_title": "Capture region screenshot",
+        "default_popup": "popup.html"
+    }
+}
